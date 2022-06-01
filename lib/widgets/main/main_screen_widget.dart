@@ -11,7 +11,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   int _selectedTab = 1;
 
   void onSelectTab(int index) {
-/*     if (_selectedTab == index) return; */
+    if (_selectedTab == index) return;
     setState(() {
       _selectedTab = index;
     });
