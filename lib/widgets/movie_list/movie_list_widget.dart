@@ -15,7 +15,14 @@ class Movie {
   });
 }
 
-class MouvieListWidget extends StatelessWidget {
+class MouvieListWidget extends StatefulWidget {
+  MouvieListWidget({Key? key}) : super(key: key);
+
+  @override
+  State<MouvieListWidget> createState() => _MouvieListWidgetState();
+}
+
+class _MouvieListWidgetState extends State<MouvieListWidget> {
   final _movies = [
     Movie(
         imageName: AppImages.moviePlaceholder,
@@ -90,89 +97,113 @@ class MouvieListWidget extends StatelessWidget {
         description:
             'Washed uo MMA fighter Cole Young, unaware of his heritage'),
   ];
-  MouvieListWidget({Key? key}) : super(key: key);
+
+  var _filteredMovies = <Movie>[];
+
+  final _searchController = TextEditingController();
+
+  void _searchMovies() {
+    var query = _searchController.text;
+    if (query.isNotEmpty) {
+      _filteredMovies = _movies.where((Movie movie) {
+        return movie.title.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    } else {
+      _filteredMovies = _movies;
+    }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredMovies = _movies;
+    _searchController.addListener(_searchMovies);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [ListView.builder(
-        padding: EdgeInsets.only(top: 70),
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        itemCount: _movies.length,
-        itemExtent: 163,
-        itemBuilder: (BuildContext context, int index) {
-          final movie = _movies[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-            child: Stack(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Colors.black.withOpacity(0.2),
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 8,
-                          offset: Offset(0, 2)),
-                    ],
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: Row(
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      Image(image: AssetImage(movie.imageName)),
-                      SizedBox(width: 15),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 20),
-                            Text(movie.title,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis),
-                            SizedBox(height: 5),
-                            Text(movie.time,
-                                style: TextStyle(color: Colors.grey),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis),
-                            SizedBox(height: 20),
-                            Text(movie.description,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis),
-                          ],
-                        ),
+      children: [
+        ListView.builder(
+          padding: EdgeInsets.only(top: 70),
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          itemCount: _filteredMovies.length,
+          itemExtent: 163,
+          itemBuilder: (BuildContext context, int index) {
+            final movie = _filteredMovies[index];
+            return Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+              child: Stack(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.black.withOpacity(0.2),
                       ),
-                      SizedBox(width: 10),
-                    ],
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 8,
+                            offset: Offset(0, 2)),
+                      ],
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: Row(
+                      // ignore: prefer_const_literals_to_create_immutables
+                      children: [
+                        Image(image: AssetImage(movie.imageName)),
+                        SizedBox(width: 15),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 20),
+                              Text(movie.title,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis),
+                              SizedBox(height: 5),
+                              Text(movie.time,
+                                  style: TextStyle(color: Colors.grey),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis),
+                              SizedBox(height: 20),
+                              Text(movie.description,
+                                  maxLines: 2, overflow: TextOverflow.ellipsis),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                      ],
+                    ),
                   ),
-                ),
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () {},
-                  ),
-                )
-              ],
-            ),
-          );
-        },
-      ),
-      Padding(
-        padding: const EdgeInsets.all(10),
-        child: TextField(
-          decoration: InputDecoration(
-            labelText: 'Поиск',
-            filled: true,
-            fillColor: Colors.white.withAlpha(235),
-            border: OutlineInputBorder()),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(10),
+                      onTap: () {},
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
         ),
-      )
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+                labelText: 'Поиск',
+                filled: true,
+                fillColor: Colors.white.withAlpha(235),
+                border: OutlineInputBorder()),
+          ),
+        )
       ],
     );
   }
