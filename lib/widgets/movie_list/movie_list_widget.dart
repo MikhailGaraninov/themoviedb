@@ -185,7 +185,9 @@ class _MouvieListWidgetState extends State<MouvieListWidget> {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10),
-                      onTap: () {},
+                      onTap: () {
+                         Navigator.of(context).pushNamed('/movie_screen');
+                      },
                     ),
                   )
                 ],
