@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:themoviedb/resources/app_images.dart';
 
 class Movie {
+  final int id;
   final String imageName;
   final String title;
   final String time;
   final String description;
 
   Movie({
+    required this.id,
     required this.imageName,
     required this.title,
     required this.time,
@@ -25,72 +27,84 @@ class MouvieListWidget extends StatefulWidget {
 class _MouvieListWidgetState extends State<MouvieListWidget> {
   final _movies = [
     Movie(
+        id: 1,
         imageName: AppImages.moviePlaceholder,
         title: 'Смертельная битва',
         time: 'April 7, 2021',
         description:
             'Washed uo MMA fighter Cole Young, unaware of his heritage'),
     Movie(
+        id: 2,
         imageName: AppImages.moviePlaceholder,
         title: 'Прибытие',
         time: 'April 7, 2021',
         description:
             'Washed uo MMA fighter Cole Young, unaware of his heritage'),
     Movie(
+        id: 3,
         imageName: AppImages.moviePlaceholder,
         title: 'Назад в будущее 1',
         time: 'April 7, 2021',
         description:
             'Washed uo MMA fighter Cole Young, unaware of his heritage'),
     Movie(
+        id: 4,
         imageName: AppImages.moviePlaceholder,
         title: 'Назад в будущее 2',
         time: 'April 7, 2021',
         description:
             'Washed uo MMA fighter Cole Young, unaware of his heritage'),
     Movie(
+        id: 5,
         imageName: AppImages.moviePlaceholder,
         title: 'Пиксели',
         time: 'April 7, 2021',
         description:
             'Washed uo MMA fighter Cole Young, unaware of his heritage'),
     Movie(
+        id: 6,
         imageName: AppImages.moviePlaceholder,
         title: 'Человек-паук',
         time: 'April 7, 2021',
         description:
             'Washed uo MMA fighter Cole Young, unaware of his heritage'),
     Movie(
+        id: 7,
         imageName: AppImages.moviePlaceholder,
         title: 'Человек из стали',
         time: 'April 7, 2021',
         description:
             'Washed uo MMA fighter Cole Young, unaware of his heritage'),
     Movie(
+        id: 8,
         imageName: AppImages.moviePlaceholder,
         title: 'Джентельмены',
         time: 'April 7, 2021',
         description:
             'Washed uo MMA fighter Cole Young, unaware of his heritage'),
     Movie(
+        id: 9,
         imageName: AppImages.moviePlaceholder,
         title: 'Тихие зори',
         time: 'April 7, 2021',
         description:
             'Washed uo MMA fighter Cole Young, unaware of his heritage'),
     Movie(
+        id: 10,
         imageName: AppImages.moviePlaceholder,
         title: 'В бой идут одни старики',
         time: 'April 7, 2021',
         description:
             'Washed uo MMA fighter Cole Young, unaware of his heritage'),
     Movie(
+        id: 11,
         imageName: AppImages.moviePlaceholder,
         title: 'Первому игроку приготовиться',
         time: 'April 7, 2021',
         description:
             'Washed uo MMA fighter Cole Young, unaware of his heritage'),
     Movie(
+        id: 12,
         imageName: AppImages.moviePlaceholder,
         title: 'Дюна',
         time: 'April 7, 2021',
@@ -119,6 +133,14 @@ class _MouvieListWidgetState extends State<MouvieListWidget> {
     super.initState();
     _filteredMovies = _movies;
     _searchController.addListener(_searchMovies);
+  }
+
+  void _moviePage(int index) {
+    final id = _movies[index].id;
+    Navigator.of(context).pushNamed(
+      '/movie_screen',
+      arguments: id,
+    );
   }
 
   @override
@@ -185,9 +207,7 @@ class _MouvieListWidgetState extends State<MouvieListWidget> {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10),
-                      onTap: () {
-                         Navigator.of(context).pushNamed('/movie_screen');
-                      },
+                      onTap: () => _moviePage(index),
                     ),
                   )
                 ],
