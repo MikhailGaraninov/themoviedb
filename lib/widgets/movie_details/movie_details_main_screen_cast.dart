@@ -15,8 +15,15 @@ class MovieDetailsMainScreenCastWidget extends StatelessWidget {
       color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("В главных ролях"),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(
+              "В главных ролях",
+              style: familyTextStyle,
+            ),
+          ),
           SizedBox(
             height: 230,
             child: Scrollbar(
@@ -60,22 +67,30 @@ class MovieDetailsMainScreenCastWidget extends StatelessWidget {
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis
                                     ),
-                                    Text("Amleth"),
+                                    SizedBox(height: 7),
+                                    Text(
+                                      "Amleth",
+                                      maxLines: 1,
+                                    ),
                                   ],
                                 ),
                               ),
                             ],
-                          )),
+                          )
+                        ),
                     ),
                   );
                 },
               ),
             ),
           ),
-          Text(
-            "Something",
-            style: TextStyle(color: Colors.black),
-          ),
+          Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: TextButton(
+              onPressed: (){}, 
+              child: Text("All Cast & Crew", style: familyTextStyle,)
+              ),
+            ),
         ],
       ),
     );

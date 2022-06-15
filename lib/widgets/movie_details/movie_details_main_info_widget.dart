@@ -27,7 +27,6 @@ class MovieDetailsMainInfoWidget extends StatelessWidget {
         ),
         _PeopleWidget(),
         SizedBox(height: 10),
-        MovieDetailsMainScreenCastWidget(),
       ],
     );
   }
